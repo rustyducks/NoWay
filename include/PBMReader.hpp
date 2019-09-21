@@ -8,14 +8,14 @@ namespace noway{
 class PBMReader{
     public:
     PBMReader();
-    int readFile(std::string fileName, Graph* graph);
+    int readFile(std::string fileName, GraphPtr graph, double* graphTableRatio);
 
     protected:
     static const std::vector<std::string> MAGICNUMBERS;
 
     std::string parseMagicNumber(const std::string& line);
     TableSize parseGraphSize(const std::string& line);
-    int parseLine(const std::string& line, Graph& graph, const unsigned int lineNumber);
+    int parseLine(const std::string& line, GraphPtr graph, const unsigned int lineNumber);
 
 };
 

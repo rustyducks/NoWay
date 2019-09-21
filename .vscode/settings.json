@@ -66,6 +66,7 @@
         "pointers": "cpp",
         "multi_span": "cpp",
         "string_span": "cpp",
-        "span": "cpp"
+        "span": "cpp",
+        "unordered_set": "cpp"
     }
 }

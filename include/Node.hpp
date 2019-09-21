@@ -8,27 +8,58 @@ namespace noway{
 class Node{
 public:
     Node(bool occupied, int x, int y);
-    double heuristic(Node other);
-    double cost(Node other);
-    bool isFree();
-    void setFree(bool free=true);
-    int x();
-    int y();
-    int h();
-    int g();
+    double heuristic(const std::shared_ptr<Node> other) const;
+    double cost(const std::shared_ptr<Node> other) const;
+    bool isFree() const{
+        return _free;
+    }
+    void setFree(bool free=true){
+        _free = free;
+    }
+    int x() const{
+        return _x;
+    }
+    int y() const{
+        return _y;
+    }
+    double h() const{
+        return _h;
+    }
+    void seth(double h) {
+        _h = h;
+    }
+    double g() const{
+        return _g;
+    }
+    void setg(double g){
+        _g = g;
+    }
+    std::shared_ptr<Node> getParent() const{
+        return _parent;
+    }
+    void setParent(std::shared_ptr<Node> parent){
+        _parent = parent;
+    }
 protected:
-    double eulerDistance (Node other);
-    double manhattanDistance (Node other);
-    bool _free;
-    bool _baseValue;
+    double eulerDistance (const std::shared_ptr<Node> other) const;
+    double manhattanDistance (const std::shared_ptr<Node> other) const;
     int _x;
     int _y;
-    int _h;
-    int _g;
-    Node* parent;
+    bool _free;
+    bool _baseValue;
+    double _g;
+    double _h;
+    std::shared_ptr<Node> _parent;
 };
 typedef std::shared_ptr<Node> NodePtr;
 typedef std::vector<std::vector<NodePtr>> Graph;
+typedef std::shared_ptr<Graph> GraphPtr;
+
+struct GraphWithRatio{
+    GraphPtr graph;
+    double ratio;
+};
+
 }
 
 #endif /* NODE_HPP */
