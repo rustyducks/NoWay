@@ -35,6 +35,7 @@ int main(int argc, char** argv) {
         if (r.getRequest(req)){
             std::cout << "New pathfinding request received : [" << req.xStart << "," << req.yStart << "] -> [" << req.xGoal << "," << req.yGoal << "]" << std::endl;
             auto t = ts.findPath(req.xStart, req.yStart, req.xGoal, req.yGoal);
+            r.sendPath(t);
         }
     }
 
