@@ -9,17 +9,11 @@ noway::ThetaStar::ThetaStar(){
 
 }
 
-std::vector<std::pair<int, int>> noway::ThetaStar::findPath(const unsigned int xstart, const unsigned int ystart, const unsigned int xgoal, const unsigned int ygoal){
-    std::cout << "graph size : " << _graph->size() << (*_graph)[0].size() << std::endl;
-    
+std::vector<std::pair<int, int>> noway::ThetaStar::findPath(const unsigned int xstart, const unsigned int ystart, const unsigned int xgoal, const unsigned int ygoal){  
     NodePtr startNode = (*_graph)[std::floor(xstart * _graphTableRatio)][std::floor(ystart * _graphTableRatio)];
     NodePtr goalNode = (*_graph)[std::floor(xgoal * _graphTableRatio)][std::floor(ygoal * _graphTableRatio)];
 
-    std::cout << "start node : " << startNode->x() << ";" << startNode->y() << ":" << startNode->isFree() << std::endl;
-    std::cout << "goal node : " << goalNode->x() << ";" << goalNode->y() << goalNode->isFree() << std::endl;
-
     opened.clear();
-    //openedSet.clear();
     closed.clear();
     
     if (!startNode->isFree()){
