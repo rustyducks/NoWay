@@ -1,24 +1,45 @@
 #include <iostream>
+#include <unistd.h>
 #include "ThetaStar.hpp"
 #include "PBMReader.hpp"
+#include "Redis.hpp"
 
-int main(int, char**) {
+
+
+int main(int argc, char** argv) {
     noway::PBMReader pbmr;
     noway::GraphPtr g = std::make_shared<noway::Graph>();
     double graphTableRatio;
     pbmr.readFile("/home/gbuisan/Documents/NoWay/data/nav_graph.pbm", g, &graphTableRatio);
 
-
-    std::cout << graphTableRatio << std::endl;
-
     noway::ThetaStar ts;
     ts.setGraph({g, graphTableRatio});
-    auto t = ts.findPath(490, 980, 1500, 990);
 
-    for (auto &pt: t){
-        std::cout << pt.first << ',' << pt.second << "; ";
+    std::string host;
+    unsigned int port;
+    if (argc == 1){
+        host = "127.0.0.1";  // Default host
+        port = 6379; // Default port
+    }else if (argc == 3){
+        host = argv[1];
+        sscanf(argv[2], "%d", &port);
+    }else{
+        std::cout << "Usage : NoWay [redis_host] [redis_port]" << std::endl;
+        return -1;
     }
-    std::cout << std::endl;
+    
+    noway::Redis r(host.c_str(), port);
+    noway::PathfindingRequest req;
+
+    while (true){
+        if (r.getRequest(req)){
+            std::cout << "New pathfinding request received : [" << req.xStart << "," << req.yStart << "] -> [" << req.xGoal << "," << req.yGoal << "]" << std::endl;
+            auto t = ts.findPath(req.xStart, req.yStart, req.xGoal, req.yGoal);
+            r.sendPath(t);
+        }
+    }
+
+
 
 
 
