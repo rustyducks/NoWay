@@ -164,3 +164,28 @@ bool noway::ThetaStar::inLineOfSight(const NodePtr& s, const NodePtr& s2) const{
     return true;
 }
 
+void noway::ThetaStar::resetGraph(){
+    for (size_t i=0; i < _graph->size(); i++){
+        for (size_t j=0; j < _graph->at(i).size(); j++){
+            _graph->at(i).at(j)->reset();
+        }
+    }
+}
+
+void noway::ThetaStar::updateDynamicObstacles(std::vector<noway::CircleObstaclePtr> obstacles){
+    for (auto &o: obstacles){
+        size_t minI = std::max(0, (int)std::floor((o->centerX - o->radius) * _graphTableRatio));
+        size_t maxI = std::min(_graph->size(), (size_t)std::ceil((o->centerX + o->radius) * _graphTableRatio));
+        size_t minJ = std::max(0, (int)std::floor((o->centerY - o->radius) * _graphTableRatio));
+        size_t maxJ = std::min(_graph->at(0).size(), (size_t)std::ceil((o->centerY + o->radius) * _graphTableRatio));
+        double radiusGraphSize = o->radius * _graphTableRatio;
+        double radiusGraphSizeSq = radiusGraphSize * radiusGraphSize;
+        for (size_t i=minI; i < maxI; i++){
+            for (size_t j=minJ; j < maxJ; j++){
+                if (i*i + j*j <= radiusGraphSizeSq)
+                _graph->at(i).at(j)->setFree(false);
+            }
+        }
+    }
+}
+

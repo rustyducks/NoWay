@@ -13,6 +13,9 @@ class ThetaStar: public Pathfinder{
     ThetaStar();
 
     std::vector<std::pair<int, int>> findPath(const unsigned int xstart, const unsigned int ystart, const unsigned int xgoal, const unsigned int ygoal) override;
+    virtual void resetGraph() override;
+    virtual void updateDynamicObstacles(std::vector<CircleObstaclePtr> obstacles) override;
+    
     void setGraph(GraphWithRatio graph){
         _graph = graph.graph;
         _graphTableRatio = graph.ratio;
