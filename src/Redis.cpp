@@ -5,6 +5,7 @@
 
 const std::string noway::Redis::REQUEST_KEY = "findpath";
 const std::string noway::Redis::RESPONSE_KEY = "path";
+const std::string noway::Redis::DYNAMIC_OBSTACLES_KEY = "dynamic_obstacles";
 
 noway::Redis::Redis(char const* host, const unsigned int port){
     _ctx = redisConnect(host, port);
@@ -58,4 +59,20 @@ int noway::Redis::sendPath(std::vector<std::pair<int, int>> path) const{
     redisGetReply(_respCtx,(void**)&reply); // reply for GET
     freeReplyObject(reply);
     return 0;
+}
+
+int noway::Redis::getDynamicObstacles(std::vector<noway::CircleObstaclePtr>& obstacles) const{
+    obstacles.clear();
+    redisReply* reply = (redisReply*)redisCommand(_respCtx, "LRANGE %s 0 -1", DYNAMIC_OBSTACLES_KEY.c_str());
+    if ((reply == nullptr) || (reply->type != REDIS_REPLY_ARRAY)){
+        return -1;
+    }
+    for (size_t i=0; i<reply->elements; i++){
+        int centerX, centerY;
+        double radius;
+        sscanf(reply->element[i]->str, "%d,%d,%lf", &centerX, &centerY, &radius);
+        obstacles.push_back(std::make_shared<noway::CircleObstacle>(centerX, centerY, radius));
+    }
+
+    return reply->elements;
 }
