@@ -20,6 +20,8 @@ class ThetaStar: public Pathfinder{
         _graph = graph.graph;
         _graphTableRatio = graph.ratio;
     }
+
+    void displayGraph();
     
 
     protected:

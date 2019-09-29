@@ -174,18 +174,29 @@ void noway::ThetaStar::resetGraph(){
 
 void noway::ThetaStar::updateDynamicObstacles(std::vector<noway::CircleObstaclePtr> obstacles){
     for (auto &o: obstacles){
-        size_t minI = std::max(0, (int)std::floor((o->centerX - o->radius) * _graphTableRatio));
-        size_t maxI = std::min(_graph->size(), (size_t)std::ceil((o->centerX + o->radius) * _graphTableRatio));
-        size_t minJ = std::max(0, (int)std::floor((o->centerY - o->radius) * _graphTableRatio));
-        size_t maxJ = std::min(_graph->at(0).size(), (size_t)std::ceil((o->centerY + o->radius) * _graphTableRatio));
+        int centerXGraph = (int)std::floor((o->centerX * _graphTableRatio));
+        int centerYGraph = (int)std::floor((o->centerY * _graphTableRatio));
         double radiusGraphSize = o->radius * _graphTableRatio;
         double radiusGraphSizeSq = radiusGraphSize * radiusGraphSize;
-        for (size_t i=minI; i < maxI; i++){
-            for (size_t j=minJ; j < maxJ; j++){
-                if (i*i + j*j <= radiusGraphSizeSq)
-                _graph->at(i).at(j)->setFree(false);
+        int x, y, rmin = std::floor(-radiusGraphSize), rmax = std::ceil(radiusGraphSize);
+        for (int i=rmin; i <= rmax; i++){
+            for (int j=rmin; j <= rmax; j++){
+                if (i*i + j*j <= radiusGraphSizeSq){
+                    x = std::min<int>(std::max<int>(centerXGraph + i, 0), _graph->size());
+                    y = std::min<int>(std::max<int>(centerYGraph + j, 0), _graph->at(x).size());
+                    _graph->at(x).at(y)->setFree(false);
+                }
             }
         }
+    }
+}
+
+void noway::ThetaStar::displayGraph(){
+    for (auto &r: *_graph){
+        for (auto &c: r){
+            std::cout << c->isFree();
+        }
+        std::cout << std::endl;
     }
 }
 
