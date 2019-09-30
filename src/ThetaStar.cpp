@@ -164,3 +164,39 @@ bool noway::ThetaStar::inLineOfSight(const NodePtr& s, const NodePtr& s2) const{
     return true;
 }
 
+void noway::ThetaStar::resetGraph(){
+    for (size_t i=0; i < _graph->size(); i++){
+        for (size_t j=0; j < _graph->at(i).size(); j++){
+            _graph->at(i).at(j)->reset();
+        }
+    }
+}
+
+void noway::ThetaStar::updateDynamicObstacles(std::vector<noway::CircleObstaclePtr> obstacles){
+    for (auto &o: obstacles){
+        int centerXGraph = (int)std::floor((o->centerX * _graphTableRatio));
+        int centerYGraph = (int)std::floor((o->centerY * _graphTableRatio));
+        double radiusGraphSize = o->radius * _graphTableRatio;
+        double radiusGraphSizeSq = radiusGraphSize * radiusGraphSize;
+        int x, y, rmin = std::floor(-radiusGraphSize), rmax = std::ceil(radiusGraphSize);
+        for (int i=rmin; i <= rmax; i++){
+            for (int j=rmin; j <= rmax; j++){
+                if (i*i + j*j <= radiusGraphSizeSq){
+                    x = std::min<int>(std::max<int>(centerXGraph + i, 0), _graph->size());
+                    y = std::min<int>(std::max<int>(centerYGraph + j, 0), _graph->at(x).size());
+                    _graph->at(x).at(y)->setFree(false);
+                }
+            }
+        }
+    }
+}
+
+void noway::ThetaStar::displayGraph(){
+    for (auto &r: *_graph){
+        for (auto &c: r){
+            std::cout << c->isFree();
+        }
+        std::cout << std::endl;
+    }
+}
+

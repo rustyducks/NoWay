@@ -34,6 +34,12 @@ int main(int argc, char** argv) {
     while (true){
         if (r.getRequest(req)){
             std::cout << "New pathfinding request received : [" << req.xStart << "," << req.yStart << "] -> [" << req.xGoal << "," << req.yGoal << "]" << std::endl;
+            std::vector<noway::CircleObstaclePtr> obstacles;
+            int nobs = r.getDynamicObstacles(obstacles);
+            ts.resetGraph();
+            ts.updateDynamicObstacles(obstacles);
+            // ts.displayGraph();
+            std::cout << nobs << " obstacles updated" <<std::endl;
             auto t = ts.findPath(req.xStart, req.yStart, req.xGoal, req.yGoal);
             r.sendPath(t);
         }

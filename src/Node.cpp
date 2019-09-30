@@ -2,7 +2,7 @@
 #include <cmath>
 
 using namespace noway;
-Node::Node(bool free, int x, int y): _x(x), _y(y), _free(free), _g(0), _h(0), _parent(nullptr){
+Node::Node(bool free, int x, int y): _x(x), _y(y), _free(free), _baseValue(free), _g(0), _h(0), _parent(nullptr){
 
 }
 

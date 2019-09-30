@@ -40,6 +40,11 @@ public:
     void setParent(std::shared_ptr<Node> parent){
         _parent = parent;
     }
+    void reset(){
+        seth(0);
+        setg(0);
+        setFree(_baseValue);
+    }
 protected:
     double eulerDistance (const std::shared_ptr<Node> other) const;
     double manhattanDistance (const std::shared_ptr<Node> other) const;
