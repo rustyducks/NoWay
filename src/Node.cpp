@@ -1,4 +1,4 @@
-#include "Node.hpp"
+#include "NoWay/Node.hpp"
 #include <cmath>
 
 using namespace noway;

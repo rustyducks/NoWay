@@ -1,8 +1,9 @@
-#include "ThetaStar.hpp"
+#include "NoWay/ThetaStar.hpp"
 #include <cmath>
 #include <iostream>
 #include <algorithm>
-#include "TableParams.hpp"
+#include "NoWay/TableParams.hpp"
+#include "NoWay/PriorityQueue.hpp"
 
 
 noway::ThetaStar::ThetaStar(){

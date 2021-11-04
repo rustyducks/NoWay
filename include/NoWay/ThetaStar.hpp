@@ -3,8 +3,8 @@
 
 #include <unordered_set>
 
-#include "Pathfinder.hpp"
-#include "PriorityQueue.hpp"
+#include "NoWay/Node.hpp"
+#include "NoWay/Pathfinder.hpp"
 
 
 namespace noway{

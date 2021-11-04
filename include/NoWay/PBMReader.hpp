@@ -1,7 +1,7 @@
 #include <string>
 
-#include "Node.hpp"
-#include "TableParams.hpp"
+#include "NoWay/Node.hpp"
+#include "NoWay/TableParams.hpp"
 
 namespace noway{
 

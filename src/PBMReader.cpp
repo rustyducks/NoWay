@@ -1,9 +1,9 @@
-#include "PBMReader.hpp"
+#include "NoWay/PBMReader.hpp"
 #include <fstream>
 #include <sstream>
 #include <string>
 #include <iostream>
-#include "TableParams.hpp"
+#include "NoWay/TableParams.hpp"
 
 using namespace noway;
 using namespace std;

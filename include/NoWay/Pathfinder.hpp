@@ -1,7 +1,7 @@
 #ifndef PATHFINDER_HPP
 #define PATHFINDER_HPP
-#include "Node.hpp"
-#include "Obstacle.hpp"
+#include "NoWay/Obstacle.hpp"
+#include <vector>
 
 namespace noway{
 class Pathfinder{
